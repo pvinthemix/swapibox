@@ -1,6 +1,17 @@
-.opening-crawl {
+.film-opening-crawl {
   color: gold;
   text-align: center;
-  font-size: 50px;
-  margin: 100px;
+  font-size: 40px;
+  margin: 90px;
+}
+
+.film-title, .film-year {
+  font-size: 65px;
+  font-weight: bold;
+  @extend .film-opening-crawl,
+}
+
+.film-year {
+  color: #72989B;
+  font-family: 'permant-marker';
 }

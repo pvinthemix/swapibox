@@ -6,7 +6,9 @@ class Landing extends Component {
   constructor() {
     super();
     this.state = {
-      openingFilmCrawls: ''
+      openingFilmCrawl: '',
+      title: '',
+      year: ''
     };
   }
 
@@ -15,18 +17,23 @@ class Landing extends Component {
       .then(response => response.json())
       .then(data => {
         const randomIndex = Math.round(Math.random() * (data.count - 1));
-        const openingFilmCrawl = data.results[randomIndex].opening_crawl;
+        const { opening_crawl, title, release_date } = data.results[randomIndex];
         this.setState({
-          openingFilmCrawls: openingFilmCrawl
+          openingFilmCrawl: opening_crawl,
+          title: title,
+          year: release_date.split('-')[0]
         });
       })
       .catch(error => console.log(error));
     }
 
   render() {
+    const { openingFilmCrawl, title, year } = this.state;
     return (
       <div className='Landing'>
-        <p className="opening-crawl">{this.state.openingFilmCrawls}</p>
+        <p className="film-title">{title}</p>
+        <p className="film-year">({year})</p>
+        <p className="film-opening-crawl">{openingFilmCrawl}</p>
       </div>
     );
   }
