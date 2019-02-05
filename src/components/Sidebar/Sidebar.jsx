@@ -3,13 +3,18 @@ import './Sidebar.scss'
 
 
 class Sidebar extends Component {
+ 
+handleClick = (event) => {
+  this.props.userSelectedCategory(event.target.innerText)
+}
+
   render() {
-    const categories = ['people', 'planets', 'vehicles']
+    const categories = ['People', 'Planets', 'Vehicles'];
     return (
       <div className='Sidebar'>
         {
           categories.map((category) => {
-            return <button>{category}</button>
+            return <button onClick={this.handleClick}>{category}</button>
           })
         }
       </div>
