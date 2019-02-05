@@ -1,12 +1,17 @@
 import React, { Component } from 'react';
+import './Sidebar.scss'
 
 
 class Sidebar extends Component {
   render() {
+    const categories = ['people', 'planets', 'vehicles']
     return (
-      <div>
-        <h1>hello</h1>
-
+      <div className='Sidebar'>
+        {
+          categories.map((category) => {
+            return <button>{category}</button>
+          })
+        }
       </div>
     );
   }
