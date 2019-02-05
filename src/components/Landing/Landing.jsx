@@ -6,16 +6,18 @@ class Landing extends Component {
   constructor() {
     super();
     this.state = {
-      openingCrawl: ""
+      openingFilmCrawls: ''
     };
   }
 
   componentDidMount() {
-    fetch('https://swapi.co/api/films/1/')
+    fetch('https://swapi.co/api/films')
       .then(response => response.json())
       .then(data => {
+        const randomIndex = Math.round(Math.random() * (data.count - 1));
+        const openingFilmCrawl = data.results[randomIndex].opening_crawl;
         this.setState({
-          openingCrawl: data.opening_crawl
+          openingFilmCrawls: openingFilmCrawl
         });
       })
       .catch(error => console.log(error));
@@ -24,7 +26,7 @@ class Landing extends Component {
   render() {
     return (
       <div className='Landing'>
-        <p className="opening-crawl">{this.state.openingCrawl}</p>
+        <p className="opening-crawl">{this.state.openingFilmCrawls}</p>
       </div>
     );
   }
