@@ -9,7 +9,7 @@ handleClick = (event) => {
 }
 
   render() {
-    const categories = ['People', 'Planets', 'Vehicles'];
+    const categories = ['People', 'Planets', 'Vehicles', 'Favorites'];
     return (
       <div className='Sidebar'>
         {
