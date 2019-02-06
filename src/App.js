@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import Sidebar from './components/Sidebar/Sidebar';
 import Landing from './components/Landing/Landing';
+import People from './components/People/People';
+import Planets from './components/Planets/Planets';
+import Vehicles from './components/Vehicles/Vehicles';
 import './App.scss';
 
 class App extends Component {
@@ -18,17 +21,20 @@ class App extends Component {
   }
 
   renderSelectedCategory = () => {
-    switch (this.state.selectedCategory) {
+    const { selectedCategory } = this.state;
+    switch (selectedCategory) {
       case 'Landing':
         return <Landing />
-      // case 'People':
-      //   return <People />
-
+      case 'People':
+        return <People />
+      case 'Planets':
+        return <Planets />
+      case 'Vehicles':
+        return <Vehicles />
     }
   }
 
-  render() {
-    
+  render() {  
     return (
       <div className="App">
         <Sidebar userSelectedCategory={this.userSelectedCategory}/>
