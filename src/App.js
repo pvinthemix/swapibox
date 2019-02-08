@@ -22,56 +22,83 @@ class App extends Component {
   }
 
   componentDidMount() {
-    fetch('https://swapi.co/api/films')
-      .then(response => response.json())
-      .then(data => {
-        const randomIndex = Math.round(Math.random() * (data.count - 1));
-        const { opening_crawl, title, release_date } = data.results[randomIndex];
-        this.setState({
-          openingFilmCrawl: opening_crawl,
-          title: title,
-          year: release_date.split('-')[0]
-        });
-      })
-      .catch(error => console.log(error));
+    this.fetchPeople();
+    // this.fetchPlanets();
+    // this.fetchVehicles();
 
+
+
+    // fetch('https://swapi.co/api/films')
+    //   .then(response => response.json())
+    //   .then(data => {
+    //     const randomIndex = Math.round(Math.random() * (data.count - 1));
+    //     const { opening_crawl, title, release_date } = data.results[randomIndex];
+    //     this.setState({
+    //       openingFilmCrawl: opening_crawl,
+    //       title: title,
+    //       year: release_date.split('-')[0]
+    //     });
+    //   })
+    //   .catch(error => console.log(error));
+
+
+    // fetch('https://swapi.co/api/species/')
+    //   .then(response => response.json())
+    //   .then(data => {
+    //     console.log(data.results)
+    //     this.setState({
+    //       species: data.results
+    //     });
+    //   })
+    //   .catch(error => console.log(error));
+
+    // fetch('https://swapi.co/api/vehicles/')
+    //   .then(response => response.json())
+    //   .then(data => {
+    //     console.log(data.results)
+    //     this.setState({
+    //       vehicles: data.results
+    //     });
+    //   })
+    //   .catch(error => console.log(error));
+    
+    // fetch('https://swapi.co/api/planets/')
+    //   .then(response => response.json())
+    //   .then(data => {
+    //     console.log(data.results)
+    //     this.setState({
+    //       planets: data.results
+    //     });
+    //   })
+    //   .catch(error => console.log(error));
+  }
+
+  fetchFilmCrawl = () => {
+    
+  }
+
+  fetchPeople = () => {
+    const charactersObject = {}
     fetch('https://swapi.co/api/people/')
       .then(response => response.json())
       .then(data => {
-        console.log(data.results)
+        const characters = data.results
+        characters.forEach(async character => {
+          // populate characters object
+          charactersObject[character.name] = character;
+          // fetch homeworld
+          const responseHomeworld = await fetch(character.homeworld);//url
+          const homeworld = await responseHomeworld.json();
+          charactersObject[character.name].homeworld = homeworld.name;
+          charactersObject[character.name].population = homeworld.population;
+          // fetch species
+          const responseSpecies = await fetch(character.species);
+          const species = await responseSpecies.json();
+          charactersObject[character.name].species = species.name;
+        })
         this.setState({
-          characters: data.results
-        });
-      })
-      .catch(error => console.log(error));
-
-    fetch('https://swapi.co/api/species/')
-      .then(response => response.json())
-      .then(data => {
-        console.log(data.results)
-        this.setState({
-          species: data.results
-        });
-      })
-      .catch(error => console.log(error));
-
-    fetch('https://swapi.co/api/vehicles/')
-      .then(response => response.json())
-      .then(data => {
-        console.log(data.results)
-        this.setState({
-          vehicles: data.results
-        });
-      })
-      .catch(error => console.log(error));
-    
-    fetch('https://swapi.co/api/planets/')
-      .then(response => response.json())
-      .then(data => {
-        console.log(data.results)
-        this.setState({
-          planets: data.results
-        });
+          characters: Object.values(charactersObject)
+        })
       })
       .catch(error => console.log(error));
   }
@@ -83,13 +110,10 @@ class App extends Component {
   }
 
   renderSelectedCategory = () => {
-    const { selectedCategory, characters, planets, vehicles, species } = this.state;
+    const { selectedCategory, characters } = this.state;
     switch (selectedCategory) {
       case 'People':
-        return <People characters={characters}
-                        planets={planets}
-                        vehicles={vehicles}
-                        species={species}/>
+        return <People characters={characters}/>
       case 'Planets':
         return <Planets />
       case 'Vehicles':
